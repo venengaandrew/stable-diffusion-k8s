@@ -10,12 +10,20 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
-# Stable Diffusion and optional companion models. Change these out if you'd like
-models:
-  sd14: https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media
-  gfpGan13: https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth
-  realEsrGanx4p10: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth
-  realEsrGanx4Animep02: https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth
+# Init Container config
+init:
+  image: busybox:1.37 # use alpine:3.21.2 for curl
+  downloadMethod: wget # use the `files/<downloadMethod>-init.sh` script at startup wget and curl provided.
+  # Stable Diffusion and optional companion models. Change these out if you'd like
+  # model:
+  # - url: (required) url of the file to download
+  #  filename: (optional) rename the downloaded file to this value
+  models:
+    - url: 'https://www.googleapis.com/storage/v1/b/aai-blog-files/o/sd-v1-4.ckpt?alt=media'
+      filename: model.ckpt
+    - url: 'https://github.com/TencentARC/GFPGAN/releases/download/v1.3.0/GFPGANv1.3.pth'
+    - url: 'https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth'
+    - url: 'https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth'
 
 imagePullSecrets: []
 nameOverride: ""
